@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
 
@@ -62,9 +63,9 @@ public class Main extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        cb_vendedores = new javax.swing.JComboBox<>();
+        cb_carros = new javax.swing.JComboBox<>();
+        cb_clientes = new javax.swing.JComboBox<>();
         tf_costo = new javax.swing.JTextField();
         btn_addVenta = new javax.swing.JButton();
 
@@ -328,6 +329,11 @@ public class Main extends javax.swing.JFrame {
         jLabel17.setText("Carro vendido:");
 
         btn_addVenta.setText("Agregar");
+        btn_addVenta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_addVentaMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jp_ventaLayout = new javax.swing.GroupLayout(jp_venta);
         jp_venta.setLayout(jp_ventaLayout);
@@ -342,8 +348,8 @@ public class Main extends javax.swing.JFrame {
                             .addComponent(jLabel17))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jp_ventaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cb_vendedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cb_carros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jp_ventaLayout.createSequentialGroup()
                         .addGroup(jp_ventaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,7 +360,7 @@ public class Main extends javax.swing.JFrame {
                             .addGroup(jp_ventaLayout.createSequentialGroup()
                                 .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(cb_clientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 255, Short.MAX_VALUE)
                         .addComponent(btn_addVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(116, 116, 116))))
@@ -365,13 +371,13 @@ public class Main extends javax.swing.JFrame {
                 .addGap(34, 34, 34)
                 .addGroup(jp_ventaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cb_vendedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jp_ventaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jp_ventaLayout.createSequentialGroup()
                         .addGroup(jp_ventaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel16)
-                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cb_clientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(21, 21, 21)
                         .addGroup(jp_ventaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel15)
@@ -380,7 +386,7 @@ public class Main extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(jp_ventaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cb_carros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(254, Short.MAX_VALUE))
         );
 
@@ -415,8 +421,18 @@ public class Main extends javax.swing.JFrame {
 
     private void btn_addCarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_addCarMouseClicked
         try {
-            Vehiculo car = new Vehiculo(tf_marca.getText(), tf_modelo.getText(), colorCar, date_year.getDate(), Double.parseDouble(tf_precio.getText()));
+            DefaultComboBoxModel modelCar = (DefaultComboBoxModel) cb_carros.getModel();
+            
+            Vehiculo car = new Vehiculo(
+                    tf_marca.getText(), 
+                    tf_modelo.getText(), 
+                    colorCar, 
+                    date_year.getDate(), 
+                    Double.parseDouble(tf_precio.getText()));
+            
             carros.add(car);
+            
+            modelCar.removeAllElements();
 
             File vehiculoFile = null;
             FileWriter fw = null;
@@ -435,6 +451,9 @@ public class Main extends javax.swing.JFrame {
                             + "]\n"); //escribe desde el buffer
 
                 }
+                
+                modelCar.addAll(carros);
+                
 
                 bw.newLine();
                 bw.flush();
@@ -442,6 +461,8 @@ public class Main extends javax.swing.JFrame {
                 tf_marca.setText("");
                 tf_modelo.setText("");
                 tf_precio.setText("");
+                
+                cb_carros.setModel(modelCar);
 
                 JOptionPane.showMessageDialog(this, "Agregado exitosamente!");
 
@@ -452,7 +473,7 @@ public class Main extends javax.swing.JFrame {
             bw.close();
             fw.close();
 
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "No se puedo agregar");
         }
 
@@ -467,12 +488,15 @@ public class Main extends javax.swing.JFrame {
 
     private void btn_addVendedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_addVendedorMouseClicked
         try {
+            DefaultComboBoxModel modelVend = (DefaultComboBoxModel) cb_vendedores.getModel();
+            
             Vendedor vend = new Vendedor(
                     tf_nombre.getText(), 
                     Integer.parseInt(tf_cantidadCarros.getText()), 
                     Double.parseDouble(tf_dineroGanado.getText()));
             
             vendedores.add(vend);
+            modelVend.removeAllElements();
 
             File vehiculoFile = null;
             FileWriter fw = null;
@@ -488,8 +512,10 @@ public class Main extends javax.swing.JFrame {
                             + "\t" + vendedor.getCarrosVendidos() + ", " + "\n"
                             + "\t" + vendedor.getDineroGenerado() + ", " + "\n"
                             + "]\n"); //escribe desde el buffer
-
+                   
                 }
+                
+                modelVend.addAll(vendedores);
 
                 bw.newLine();
                 bw.flush();
@@ -497,6 +523,8 @@ public class Main extends javax.swing.JFrame {
                 tf_nombre.setText("");
                 tf_cantidadCarros.setText("");
                 tf_dineroGanado.setText("");
+                
+                cb_vendedores.setModel(modelVend);
 
                 JOptionPane.showMessageDialog(this, "Agregado exitosamente!");
 
@@ -507,22 +535,27 @@ public class Main extends javax.swing.JFrame {
             bw.close();
             fw.close();
 
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "No se puedo agregar");
         }
     }//GEN-LAST:event_btn_addVendedorMouseClicked
 
     private void btn_addClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_addClienteMouseClicked
         try {
+            DefaultComboBoxModel modelClie = (DefaultComboBoxModel) cb_clientes.getModel();
+            
             Double sueldoDisponible = Double.parseDouble(tf_sueldoDisp.getText());
             
-            Cliente cli = new Cliente(tf_nombre.getText(),  
+            Cliente cli = new Cliente(
+                    tf_clienteNombre.getText(),  
                     tf_profesion.getText(), 
                     Integer.parseInt(tf_edad.getText()), 
                     Integer.parseInt(tf_carrosComprados.getText()), 
                     sueldoDisponible);
             
             clientes.add(cli);
+            
+            modelClie.removeAllElements();
 
             File vehiculoFile = null;
             FileWriter fw = null;
@@ -542,15 +575,19 @@ public class Main extends javax.swing.JFrame {
                             + "]\n"); //escribe desde el buffer
 
                 }
+                
+                modelClie.addAll(clientes);
 
                 bw.newLine();
                 bw.flush();
 
-                tf_nombre.setText("");
+                tf_clienteNombre.setText("");
                 tf_profesion.setText("");
                 tf_edad.setText("");
                 tf_carrosComprados.setText("");
                 tf_sueldoDisp.setText("");
+                
+                cb_clientes.setModel(modelClie);
 
                 JOptionPane.showMessageDialog(this, "Agregado exitosamente!");
 
@@ -561,10 +598,70 @@ public class Main extends javax.swing.JFrame {
             bw.close();
             fw.close();
 
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "No se puedo agregar");
         }
     }//GEN-LAST:event_btn_addClienteMouseClicked
+
+    private void btn_addVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_addVentaMouseClicked
+        try {
+            DefaultComboBoxModel modelClie = (DefaultComboBoxModel) cb_clientes.getModel();
+            DefaultComboBoxModel modelVend = (DefaultComboBoxModel) cb_vendedores.getModel();
+            DefaultComboBoxModel modelCar = (DefaultComboBoxModel) cb_carros.getModel();
+            
+            
+            
+            Venta vent = new Venta(
+                    Double.parseDouble(tf_costo.getText()), 
+                    modelClie.getSelectedItem().toString(),
+                    modelVend.getSelectedItem().toString(),
+                    modelCar.getSelectedItem().toString()
+            );
+            
+            ventas.add(vent);
+            
+
+            File vehiculoFile = null;
+            FileWriter fw = null;
+            BufferedWriter bw = null;
+
+            try {
+                vehiculoFile = new File("./ventas.txt");
+                fw = new FileWriter(vehiculoFile); //se crea el archivo en este momento
+                bw = new BufferedWriter(fw);
+
+                for (Venta venta : ventas) {
+                    bw.write("[\n\t" + venta.getCostoTrans()+ ", " + "\n"
+                            + "\t" + venta.getCliente()+ ", " + "\n"
+                            + "\t" + venta.getVendedor()+ ", " + "\n"
+                            + "\t" + venta.getCarroVend()+ ", " + "\n"
+                            + "]\n"); //escribe desde el buffer
+
+                }
+                
+                
+
+                bw.newLine();
+                bw.flush();
+
+                tf_costo.setText("");
+                cb_clientes.setSelectedIndex(-1);
+                cb_vendedores.setSelectedIndex(-1);
+                cb_carros.setSelectedIndex(-1);
+
+                JOptionPane.showMessageDialog(this, "Agregado exitosamente!");
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "No se puedo agregar, paso un error internamente");
+            }
+
+            bw.close();
+            fw.close();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "No se puedo agregar");
+        }
+    }//GEN-LAST:event_btn_addVentaMouseClicked
 
     public static void main(String args[]) {
 
@@ -606,10 +703,10 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton btn_addVendedor;
     private javax.swing.JButton btn_addVenta;
     private javax.swing.JButton btn_color;
+    private javax.swing.JComboBox<String> cb_carros;
+    private javax.swing.JComboBox<String> cb_clientes;
+    private javax.swing.JComboBox<String> cb_vendedores;
     private com.toedter.calendar.JDateChooser date_year;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

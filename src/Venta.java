@@ -1,31 +1,47 @@
 
 public class Venta {
-    private Vendedor vendedor = new Vendedor();
-    private Cliente cliente = new Cliente();
+    private String vendedor, cliente, carroVend;
+    
     private double costoTrans;
-    private Vehiculo carroVend = new Vehiculo();
+    
+
+    public Venta(double costoTrans, String cliente, String vendedor, String carroVend) {
+        this.costoTrans = costoTrans;
+        this.cliente = cliente;
+        this.vendedor = vendedor;
+        this.carroVend = carroVend;
+    }
 
     public Venta(double costoTrans) {
         this.costoTrans = costoTrans;
     }
+    
 
     public Venta() {
     }
 
-    public Vendedor getVendedor() {
+    public String getVendedor() {
         return vendedor;
     }
 
-    public void setVendedor(Vendedor vendedor) {
+    public void setVendedor(String vendedor) {
         this.vendedor = vendedor;
     }
 
-    public Cliente getCliente() {
+    public String getCliente() {
         return cliente;
     }
 
-    public void setCliente(Cliente cliente) {
+    public void setCliente(String cliente) {
         this.cliente = cliente;
+    }
+
+    public String getCarroVend() {
+        return carroVend;
+    }
+
+    public void setCarroVend(String carroVend) {
+        this.carroVend = carroVend;
     }
 
     public double getCostoTrans() {
@@ -36,13 +52,7 @@ public class Venta {
         this.costoTrans = costoTrans;
     }
 
-    public Vehiculo getCarroVend() {
-        return carroVend;
-    }
-
-    public void setCarroVend(Vehiculo carroVend) {
-        this.carroVend = carroVend;
-    }
+   
 
     @Override
     public String toString() {
