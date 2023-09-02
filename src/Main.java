@@ -659,6 +659,7 @@ public class Main extends javax.swing.JFrame {
         
         
         modeloCarro.removeAllElements();
+        
         while(modeloCarro.getSize()>0){
             modeloCarro.removeElementAt(0);
         }
@@ -698,12 +699,21 @@ public class Main extends javax.swing.JFrame {
                 data[3] = data[3].substring(2, data[3].length());
                 v = new Vehiculo(data[0], data[1], data[2], Double.parseDouble(data[3]));
 
-                modeloCarro.addElement(v);
+                if(!carrosTemp.contains(v)){
+                    carrosTemp.add(v);
+                }
+                
                 
             }
 
+            for (int i = 0; modeloCarro.getSize() < 10; i++) {
+                Vehiculo car = (Vehiculo) modeloCarro.getElementAt(i);
+                if(!carrosTemp.contains(car)){
+                    modeloCarro.addAll(carrosTemp);
+                }
+                
+            }
             
-            modeloCarro.addAll(carrosTemp);
             cb_carros.setModel(modeloCarro);
             fr.close();
             br.close();
