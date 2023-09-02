@@ -1,6 +1,1 @@
-[
-	asd, 
-	12, 
-	12.0, 
-];
-
+[	toyota, 	asd, 	asd, 	200.0, ];[	hona, 	asd, 	asd, 	200.0, ];[	shit, 	asd, 	asd, 	20.0, ];[	asd, 	asd, 	asd, 	12.0, ];[	asd, 	asd, 	asd, 	12.0, ];[	honda, 	asd, 	asd, 	12.0, ];
