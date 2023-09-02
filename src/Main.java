@@ -28,6 +28,8 @@ public class Main extends javax.swing.JFrame {
             File f = new File("./vehiculo.txt");
 
             agregarComboCarro();
+            agregarComboVendedor();
+            agregarComboCliente();
 
         } catch (Exception e) {
         }
@@ -848,9 +850,12 @@ public class Main extends javax.swing.JFrame {
                 BufferedReader br = new BufferedReader(fr);
 
                 String line = "";
+                String entrada = "";
+                ArrayList<String> datos = new ArrayList<>();
 
                 while ((line = br.readLine()) != null) {
-                    ta_1.append(line);
+                    ta_1.append(line + "\n");
+
                 }
 
             } catch (Exception e) {
@@ -865,6 +870,7 @@ public class Main extends javax.swing.JFrame {
         int seleccion = jfc.showSaveDialog(this);
         FileWriter fw = null;
         BufferedWriter bw = null;
+
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             try {
 
@@ -877,7 +883,7 @@ public class Main extends javax.swing.JFrame {
                 bw.write(ta_1.getText());
                 ta_1.setText("");
                 bw.flush();
-                JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente");
+                JOptionPane.showMessageDialog(this, "Archivo modificado exitosamente");
 
             } catch (Exception e) {
                 e.printStackTrace();
