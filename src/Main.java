@@ -850,8 +850,7 @@ public class Main extends javax.swing.JFrame {
                 BufferedReader br = new BufferedReader(fr);
 
                 String line = "";
-                String entrada = "";
-                ArrayList<String> datos = new ArrayList<>();
+                
 
                 while ((line = br.readLine()) != null) {
                     ta_1.append(line + "\n");
