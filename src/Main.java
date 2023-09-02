@@ -1,12 +1,15 @@
 
 import java.awt.Color;
 import java.awt.color.ColorSpace;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -18,6 +21,13 @@ public class Main extends javax.swing.JFrame {
     public Main() {
         initComponents();
         setLocationRelativeTo(null);
+        try {
+            File f = new File("./vehiculo.txt");
+            
+            agregarComboCarro();
+
+        } catch (Exception e) {
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -35,9 +45,9 @@ public class Main extends javax.swing.JFrame {
         tf_marca = new javax.swing.JTextField();
         tf_modelo = new javax.swing.JTextField();
         tf_precio = new javax.swing.JTextField();
-        btn_color = new javax.swing.JButton();
         btn_addCar = new javax.swing.JButton();
-        date_year = new com.toedter.calendar.JDateChooser();
+        tf_color = new javax.swing.JTextField();
+        tf_year = new javax.swing.JTextField();
         jp_vendedor = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -88,13 +98,6 @@ public class Main extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Color");
 
-        btn_color.setText("Color");
-        btn_color.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btn_colorMouseClicked(evt);
-            }
-        });
-
         btn_addCar.setText("Agregar");
         btn_addCar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -122,8 +125,8 @@ public class Main extends javax.swing.JFrame {
                         .addGap(1, 1, 1)))
                 .addGroup(jp_vehiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jp_vehiculoLayout.createSequentialGroup()
-                        .addComponent(btn_color)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 280, Short.MAX_VALUE)
+                        .addComponent(tf_color, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 281, Short.MAX_VALUE)
                         .addComponent(btn_addCar, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(118, 118, 118))
                     .addGroup(jp_vehiculoLayout.createSequentialGroup()
@@ -131,7 +134,7 @@ public class Main extends javax.swing.JFrame {
                             .addComponent(tf_marca, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tf_precio, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tf_modelo, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(date_year, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tf_year, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jp_vehiculoLayout.setVerticalGroup(
@@ -148,13 +151,13 @@ public class Main extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jp_vehiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(btn_color)
-                    .addComponent(btn_addCar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
-                .addGroup(jp_vehiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btn_addCar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tf_color, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(jp_vehiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(date_year, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
+                    .addComponent(tf_year, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
                 .addGroup(jp_vehiculoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(tf_precio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -421,18 +424,16 @@ public class Main extends javax.swing.JFrame {
 
     private void btn_addCarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_addCarMouseClicked
         try {
-            DefaultComboBoxModel modelCar = (DefaultComboBoxModel) cb_carros.getModel();
-            
+
             Vehiculo car = new Vehiculo(
-                    tf_marca.getText(), 
-                    tf_modelo.getText(), 
-                    colorCar, 
-                    date_year.getDate(), 
+                    tf_marca.getText(),
+                    tf_modelo.getText(),
+                    tf_color.getText(),
+                    tf_year.getText(),
                     Double.parseDouble(tf_precio.getText()));
-            
+
             carros.add(car);
-            
-            modelCar.removeAllElements();
+            //System.out.println(carros);
 
             File vehiculoFile = null;
             FileWriter fw = null;
@@ -440,7 +441,7 @@ public class Main extends javax.swing.JFrame {
 
             try {
                 vehiculoFile = new File("./vehiculos.txt");
-                fw = new FileWriter(vehiculoFile); //se crea el archivo en este momento
+                fw = new FileWriter(vehiculoFile, true); //se crea el archivo en este momento
                 bw = new BufferedWriter(fw);
 
                 for (Vehiculo carro : carros) {
@@ -448,12 +449,9 @@ public class Main extends javax.swing.JFrame {
                             + "\t" + carro.getModelo() + ", " + "\n"
                             + "\t" + carro.getYear() + ", " + "\n"
                             + "\t" + carro.getPrecio() + ", " + "\n"
-                            + "]\n"); //escribe desde el buffer
+                            + "];"); //escribe desde el buffer
 
                 }
-                
-                modelCar.addAll(carros);
-                
 
                 bw.newLine();
                 bw.flush();
@@ -462,12 +460,16 @@ public class Main extends javax.swing.JFrame {
                 tf_modelo.setText("");
                 tf_precio.setText("");
                 
-                cb_carros.setModel(modelCar);
 
+                
+                agregarComboCarro();
+
+//                agregarComboCarro(vehiculoFile);
                 JOptionPane.showMessageDialog(this, "Agregado exitosamente!");
 
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "No se puedo agregar, paso un error internamente");
+                e.printStackTrace();
+//JOptionPane.showMessageDialog(this, "No se puedo agregar, paso un error internamente");
             }
 
             bw.close();
@@ -480,21 +482,15 @@ public class Main extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btn_addCarMouseClicked
 
-    private void btn_colorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_colorMouseClicked
-
-        colorCar = JColorChooser.showDialog(this, "Elija un color", Color.BLACK);
-
-    }//GEN-LAST:event_btn_colorMouseClicked
-
     private void btn_addVendedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_addVendedorMouseClicked
         try {
             DefaultComboBoxModel modelVend = (DefaultComboBoxModel) cb_vendedores.getModel();
-            
+
             Vendedor vend = new Vendedor(
-                    tf_nombre.getText(), 
-                    Integer.parseInt(tf_cantidadCarros.getText()), 
+                    tf_nombre.getText(),
+                    Integer.parseInt(tf_cantidadCarros.getText()),
                     Double.parseDouble(tf_dineroGanado.getText()));
-            
+
             vendedores.add(vend);
             modelVend.removeAllElements();
 
@@ -504,17 +500,17 @@ public class Main extends javax.swing.JFrame {
 
             try {
                 vehiculoFile = new File("./vendedores.txt");
-                fw = new FileWriter(vehiculoFile); //se crea el archivo en este momento
+                fw = new FileWriter(vehiculoFile, true); //se crea el archivo en este momento
                 bw = new BufferedWriter(fw);
 
                 for (Vendedor vendedor : vendedores) {
                     bw.write("[\n\t" + vendedor.getNombre() + ", " + "\n"
                             + "\t" + vendedor.getCarrosVendidos() + ", " + "\n"
                             + "\t" + vendedor.getDineroGenerado() + ", " + "\n"
-                            + "]\n"); //escribe desde el buffer
-                   
+                            + "];\n"); //escribe desde el buffer
+
                 }
-                
+
                 modelVend.addAll(vendedores);
 
                 bw.newLine();
@@ -523,7 +519,7 @@ public class Main extends javax.swing.JFrame {
                 tf_nombre.setText("");
                 tf_cantidadCarros.setText("");
                 tf_dineroGanado.setText("");
-                
+
                 cb_vendedores.setModel(modelVend);
 
                 JOptionPane.showMessageDialog(this, "Agregado exitosamente!");
@@ -543,18 +539,18 @@ public class Main extends javax.swing.JFrame {
     private void btn_addClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_addClienteMouseClicked
         try {
             DefaultComboBoxModel modelClie = (DefaultComboBoxModel) cb_clientes.getModel();
-            
+
             Double sueldoDisponible = Double.parseDouble(tf_sueldoDisp.getText());
-            
+
             Cliente cli = new Cliente(
-                    tf_clienteNombre.getText(),  
-                    tf_profesion.getText(), 
-                    Integer.parseInt(tf_edad.getText()), 
-                    Integer.parseInt(tf_carrosComprados.getText()), 
+                    tf_clienteNombre.getText(),
+                    tf_profesion.getText(),
+                    Integer.parseInt(tf_edad.getText()),
+                    Integer.parseInt(tf_carrosComprados.getText()),
                     sueldoDisponible);
-            
+
             clientes.add(cli);
-            
+
             modelClie.removeAllElements();
 
             File vehiculoFile = null;
@@ -563,19 +559,19 @@ public class Main extends javax.swing.JFrame {
 
             try {
                 vehiculoFile = new File("./clientes.txt");
-                fw = new FileWriter(vehiculoFile); //se crea el archivo en este momento
+                fw = new FileWriter(vehiculoFile, true); //se crea el archivo en este momento
                 bw = new BufferedWriter(fw);
 
                 for (Cliente cliente : clientes) {
                     bw.write("[\n\t" + cliente.getNombre() + ", " + "\n"
-                            + "\t" + cliente.getProfesion()+ ", " + "\n"
-                            + "\t" + cliente.getEdad()+ ", " + "\n"
-                            + "\t" + cliente.getCarrosComprados()+ ", " + "\n"
-                            + "\t" + cliente.getSueldoDisp()+ ", " + "\n"
-                            + "]\n"); //escribe desde el buffer
+                            + "\t" + cliente.getProfesion() + ", " + "\n"
+                            + "\t" + cliente.getEdad() + ", " + "\n"
+                            + "\t" + cliente.getCarrosComprados() + ", " + "\n"
+                            + "\t" + cliente.getSueldoDisp() + ", " + "\n"
+                            + "];\n"); //escribe desde el buffer
 
                 }
-                
+
                 modelClie.addAll(clientes);
 
                 bw.newLine();
@@ -586,7 +582,7 @@ public class Main extends javax.swing.JFrame {
                 tf_edad.setText("");
                 tf_carrosComprados.setText("");
                 tf_sueldoDisp.setText("");
-                
+
                 cb_clientes.setModel(modelClie);
 
                 JOptionPane.showMessageDialog(this, "Agregado exitosamente!");
@@ -608,18 +604,15 @@ public class Main extends javax.swing.JFrame {
             DefaultComboBoxModel modelClie = (DefaultComboBoxModel) cb_clientes.getModel();
             DefaultComboBoxModel modelVend = (DefaultComboBoxModel) cb_vendedores.getModel();
             DefaultComboBoxModel modelCar = (DefaultComboBoxModel) cb_carros.getModel();
-            
-            
-            
+
             Venta vent = new Venta(
-                    Double.parseDouble(tf_costo.getText()), 
+                    Double.parseDouble(tf_costo.getText()),
                     modelClie.getSelectedItem().toString(),
                     modelVend.getSelectedItem().toString(),
                     modelCar.getSelectedItem().toString()
             );
-            
+
             ventas.add(vent);
-            
 
             File vehiculoFile = null;
             FileWriter fw = null;
@@ -627,19 +620,17 @@ public class Main extends javax.swing.JFrame {
 
             try {
                 vehiculoFile = new File("./ventas.txt");
-                fw = new FileWriter(vehiculoFile); //se crea el archivo en este momento
+                fw = new FileWriter(vehiculoFile, true); //se crea el archivo en este momento
                 bw = new BufferedWriter(fw);
 
                 for (Venta venta : ventas) {
-                    bw.write("[\n\t" + venta.getCostoTrans()+ ", " + "\n"
-                            + "\t" + venta.getCliente()+ ", " + "\n"
-                            + "\t" + venta.getVendedor()+ ", " + "\n"
-                            + "\t" + venta.getCarroVend()+ ", " + "\n"
-                            + "]\n"); //escribe desde el buffer
+                    bw.write("[\n\t" + venta.getCostoTrans() + ", " + "\n"
+                            + "\t" + venta.getCliente() + ", " + "\n"
+                            + "\t" + venta.getVendedor() + ", " + "\n"
+                            + "\t" + venta.getCarroVend() + ", " + "\n"
+                            + "];\n"); //escribe desde el buffer
 
                 }
-                
-                
 
                 bw.newLine();
                 bw.flush();
@@ -662,6 +653,126 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No se puedo agregar");
         }
     }//GEN-LAST:event_btn_addVentaMouseClicked
+
+    public void agregarComboCarro() {
+        DefaultComboBoxModel modeloCarro = (DefaultComboBoxModel) cb_carros.getModel();
+        
+        
+        modeloCarro.removeAllElements();
+        while(modeloCarro.getSize()>0){
+            modeloCarro.removeElementAt(0);
+        }
+        
+
+        ArrayList<Vehiculo> carrosTemp = new ArrayList<>();
+        
+
+        try {
+            File f = new File("./vehiculos.txt");
+
+            FileReader fr = new FileReader(f);
+            BufferedReader br = new BufferedReader(fr);
+
+            String line = "";
+            String entrada = "";
+            ArrayList<String> datos = new ArrayList<>();
+            Vehiculo v = null;
+            
+            while ((line = br.readLine()) != null) {
+
+                if (!line.contains("];")) {
+                    entrada += line;
+
+                } else {
+                    datos.add(entrada);
+                    entrada = "";
+                }
+
+            }
+
+            for (String dato : datos) {
+                String data[] = dato.split(",");
+                data[0] = data[0].substring(1, data[0].length());
+                data[1] = data[1].substring(2, data[1].length());
+                data[2] = data[2].substring(2, data[2].length());
+                data[3] = data[3].substring(2, data[3].length());
+                v = new Vehiculo(data[0], data[1], data[2], Double.parseDouble(data[3]));
+
+                modeloCarro.addElement(v);
+                
+            }
+
+            
+            modeloCarro.addAll(carrosTemp);
+            cb_carros.setModel(modeloCarro);
+            fr.close();
+            br.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    
+    public void agregarComboVendedor() {
+        DefaultComboBoxModel modeloVendedor = (DefaultComboBoxModel) cb_vendedores.getModel();
+        
+        
+        modeloVendedor.removeAllElements();
+        while(modeloVendedor.getSize()>0){
+            modeloVendedor.removeElementAt(0);
+        }
+        
+
+        ArrayList<Vehiculo> carrosTemp = new ArrayList<>();
+        
+
+        try {
+            File f = new File("./vendedores.txt");
+
+            FileReader fr = new FileReader(f);
+            BufferedReader br = new BufferedReader(fr);
+
+            String line = "";
+            String entrada = "";
+            ArrayList<String> datos = new ArrayList<>();
+            Vendedor v = null;
+            
+            while ((line = br.readLine()) != null) {
+
+                if (!line.contains("];")) {
+                    entrada += line;
+
+                } else {
+                    datos.add(entrada);
+                    entrada = "";
+                }
+
+            }
+
+            for (String dato : datos) {
+                String data[] = dato.split(",");
+                data[0] = data[0].substring(1, data[0].length());
+                data[1] = data[1].substring(2, data[1].length());
+                data[2] = data[2].substring(2, data[2].length());
+                
+                v = new Vendedor(data[0], Integer.parseInt(data[1]), Double.parseDouble(data[2]));
+
+                modeloVendedor.addElement(v);
+                
+            }
+
+            
+            modeloVendedor.addAll(carrosTemp);
+            cb_vendedores.setModel(modeloVendedor);
+            fr.close();
+            br.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public static void main(String args[]) {
 
@@ -692,6 +803,9 @@ public class Main extends javax.swing.JFrame {
     }
 
     Color colorCar;
+    ArrayList<String> carrosCb;
+    ArrayList<String> vendedoresCb;
+    ArrayList<String> clientesCb;
     ArrayList<Vehiculo> carros = new ArrayList<>();
     ArrayList<Vendedor> vendedores = new ArrayList<>();
     ArrayList<Cliente> clientes = new ArrayList<>();
@@ -702,11 +816,9 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton btn_addCliente;
     private javax.swing.JButton btn_addVendedor;
     private javax.swing.JButton btn_addVenta;
-    private javax.swing.JButton btn_color;
     private javax.swing.JComboBox<String> cb_carros;
     private javax.swing.JComboBox<String> cb_clientes;
     private javax.swing.JComboBox<String> cb_vendedores;
-    private com.toedter.calendar.JDateChooser date_year;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -733,6 +845,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField tf_cantidadCarros;
     private javax.swing.JTextField tf_carrosComprados;
     private javax.swing.JTextField tf_clienteNombre;
+    private javax.swing.JTextField tf_color;
     private javax.swing.JTextField tf_costo;
     private javax.swing.JTextField tf_dineroGanado;
     private javax.swing.JTextField tf_edad;
@@ -742,5 +855,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField tf_precio;
     private javax.swing.JTextField tf_profesion;
     private javax.swing.JTextField tf_sueldoDisp;
+    private javax.swing.JTextField tf_year;
     // End of variables declaration//GEN-END:variables
 }

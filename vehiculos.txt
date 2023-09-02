@@ -1,7 +1,17 @@
 [
-	Kia, 
-	Picanto, 
-	Sat Sep 02 00:00:00 CST 2023, 
-	20000.0, 
-]
-
+	honda, 
+	fgu, 
+	ghj, 
+	20.0, 
+];
+[
+	honda, 
+	fgu, 
+	ghj, 
+	20.0, 
+];[
+	toyota, 
+	gj, 
+	ghj, 
+	20.0, 
+];

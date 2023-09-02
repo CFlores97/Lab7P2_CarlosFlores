@@ -5,20 +5,29 @@ import java.util.Date;
 
 public class Vehiculo {
     private String marca, modelo;
-    private Color color;
-    private Date year;
+    private String color;
+    private String year;
     private double precio;
 
     public Vehiculo() {
     }
 
-    public Vehiculo(String marca, String modelo, Color color, Date year, double precio) {
+    public Vehiculo(String marca, String modelo, String color, String year, double precio) {
         this.marca = marca;
         this.modelo = modelo;
         this.color = color;
         this.year = year;
         this.precio = precio;
     }
+
+    public Vehiculo(String marca, String modelo, String year, double precio) {
+        this.marca = marca;
+        this.modelo = modelo;
+        this.year = year;
+        this.precio = precio;
+    }
+    
+    
 
     public String getMarca() {
         return marca;
@@ -36,19 +45,19 @@ public class Vehiculo {
         this.modelo = modelo;
     }
 
-    public Color getColor() {
+    public String getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(String color) {
         this.color = color;
     }
 
-    public Date getYear() {
+    public String getYear() {
         return year;
     }
 
-    public void setYear(Date year) {
+    public void setYear(String year) {
         this.year = year;
     }
 
