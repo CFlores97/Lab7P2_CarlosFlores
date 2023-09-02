@@ -459,6 +459,8 @@ public class Main extends javax.swing.JFrame {
                 tf_marca.setText("");
                 tf_modelo.setText("");
                 tf_precio.setText("");
+                tf_color.setText("");
+                tf_year.setText("");
                 
 
                 
@@ -699,20 +701,12 @@ public class Main extends javax.swing.JFrame {
                 data[3] = data[3].substring(2, data[3].length());
                 v = new Vehiculo(data[0], data[1], data[2], Double.parseDouble(data[3]));
 
-                if(!carrosTemp.contains(v)){
-                    carrosTemp.add(v);
-                }
+                modeloCarro.addElement(v);
                 
                 
             }
 
-            for (int i = 0; modeloCarro.getSize() < 10; i++) {
-                Vehiculo car = (Vehiculo) modeloCarro.getElementAt(i);
-                if(!carrosTemp.contains(car)){
-                    modeloCarro.addAll(carrosTemp);
-                }
-                
-            }
+            
             
             cb_carros.setModel(modeloCarro);
             fr.close();
@@ -775,6 +769,68 @@ public class Main extends javax.swing.JFrame {
             
             modeloVendedor.addAll(carrosTemp);
             cb_vendedores.setModel(modeloVendedor);
+            fr.close();
+            br.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    
+    public void agregarComboCliente() {
+        DefaultComboBoxModel modeloClientes = (DefaultComboBoxModel) cb_clientes.getModel();
+        
+        
+        modeloClientes.removeAllElements();
+        while(modeloClientes.getSize()>0){
+            modeloClientes.removeElementAt(0);
+        }
+        
+
+        ArrayList<Vehiculo> carrosTemp = new ArrayList<>();
+        
+
+        try {
+            File f = new File("./clientes.txt");
+
+            FileReader fr = new FileReader(f);
+            BufferedReader br = new BufferedReader(fr);
+
+            String line = "";
+            String entrada = "";
+            ArrayList<String> datos = new ArrayList<>();
+            Cliente c = null;
+            
+            while ((line = br.readLine()) != null) {
+
+                if (!line.contains("];")) {
+                    entrada += line;
+
+                } else {
+                    datos.add(entrada);
+                    entrada = "";
+                }
+
+            }
+
+            for (String dato : datos) {
+                String data[] = dato.split(",");
+                data[0] = data[0].substring(1, data[0].length());
+                data[1] = data[1].substring(2, data[1].length());
+                data[2] = data[2].substring(2, data[2].length());
+                data[3] = data[3].substring(2, data[3].length());
+                data[4] = data[4].substring(2, data[4].length());
+                
+                c = new Cliente(data[0], data[1], Integer.parseInt(data[2]), Integer.parseInt(data[3]), Double.parseDouble(data[4]));
+
+                modeloClientes.addElement(c);
+                
+            }
+
+            
+            
+            cb_clientes.setModel(modeloClientes);
             fr.close();
             br.close();
 
